@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block header %}Expenses{% endblock %}
+{% block content %}
+<div class="glass-card">
+    <form method="get" class="filter-bar">
+        <input type="text" name="q" placeholder="Search description..." class="form-control" value="{{ query|default_if_none:'' }}">
+        <select name="category" class="form-control">
+            <option value="">All Categories</option>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary glow">Filter</button>
+    </form>
+
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Payment</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.date|date:"d M Y" }}</td>
+                    <td>{{ expense.description|default:"-" }}</td>
+                    <td>{{ expense.category.name }}</td>
+                    <td><span style="padding: 4px 8px; border-radius: 4px; background: rgba(255,255,255,0.1); font-size: 0.8rem;">{{ expense.payment_method }}</span></td>
+                    <td style="font-weight: 600; color: var(--danger);">-${{ expense.amount|floatformat:2 }}</td>
+                    <td class="action-links">
+                        <a href="{% url 'edit_expense' expense.id %}"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'delete_expense' expense.id %}" class="delete"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">No expenses found. <a href="{% url 'add_expense' %}" style="color: var(--primary);">Add one now</a>.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

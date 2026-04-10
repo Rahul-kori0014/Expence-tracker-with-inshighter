@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block header %}{% if is_edit %}Edit Expense{% else %}Add Expression{% endif %}{% endblock %}
+{% block content %}
+<div class="glass-card" style="max-width: 600px; margin: 0 auto;">
+    <h3 style="margin-bottom: 20px;">{% if is_edit %}Update Expense Details{% else %}New Expense Details{% endif %}</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+                <label>Category *</label>
+                {% render_field form.category class="form-control" %}
+            </div>
+            <div class="form-group">
+                <label>Amount *</label>
+                {% render_field form.amount class="form-control" %}
+            </div>
+            <div class="form-group">
+                <label>Date *</label>
+                {% render_field form.date class="form-control" %}
+            </div>
+            <div class="form-group">
+                <label>Payment Method *</label>
+                {% render_field form.payment_method class="form-control" %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description (Optional)</label>
+            {% render_field form.description class="form-control" %}
+        </div>
+        
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary glow" style="flex: 1;">Save Expense</button>
+            <a href="{% url 'expense_list' %}" class="btn" style="background: rgba(255,255,255,0.1); color: var(--text-color); flex: 1; text-align: center;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

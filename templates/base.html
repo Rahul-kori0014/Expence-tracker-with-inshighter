@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker with Smart Insights</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="app-container">
+        {% if user.is_authenticated %}
+        <nav class="sidebar glass">
+            <div class="logo">
+                <i class="fas fa-wallet"></i>
+                <span>SmartTracker</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="{% url 'expense_list' %}" class="{% if request.resolver_match.url_name == 'expense_list' %}active{% endif %}"><i class="fas fa-list"></i> Expenses</a></li>
+                <li><a href="{% url 'categories' %}" class="{% if request.resolver_match.url_name == 'categories' %}active{% endif %}"><i class="fas fa-tags"></i> Categories</a></li>
+                <li><a href="{% url 'budgets' %}" class="{% if request.resolver_match.url_name == 'budgets' %}active{% endif %}"><i class="fas fa-chart-pie"></i> Budgets</a></li>
+            </ul>
+            <div class="user-profile">
+                <div class="avatar"><i class="fas fa-user"></i></div>
+                <span>{{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+                </form>
+            </div>
+        </nav>
+        {% endif %}
+        <main class="main-content">
+            <header class="topbar">
+                <h2>{% block header %}Dashboard{% endblock %}</h2>
+                {% if user.is_authenticated %}
+                <div class="top-actions">
+                    <a href="{% url 'add_expense' %}" class="btn btn-primary glow"><i class="fas fa-plus"></i> New Expense</a>
+                </div>
+                {% endif %}
+            </header>
+            
+            <div class="content-wrapper">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

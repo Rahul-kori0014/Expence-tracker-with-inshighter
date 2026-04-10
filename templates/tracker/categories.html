@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block header %}Categories{% endblock %}
+{% block content %}
+<div class="charts-grid">
+    <div>
+        <div class="glass-card">
+            <h3 style="margin-bottom: 20px;">Your Custom Categories</h3>
+            <ul style="list-style: none; padding: 0;">
+                {% for cat in user_categories %}
+                <li style="padding: 10px 0; border-bottom: 1px solid var(--glass-border);">
+                    {{ cat.name }}
+                </li>
+                {% empty %}
+                <li style="color: var(--text-muted); padding: 10px 0;">No custom categories added. Default categories are available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div>
+        <div class="glass-card">
+            <h3 style="margin-bottom: 20px;">Add Category</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Category Name *</label>
+                    {% render_field form.name class="form-control" %}
+                </div>
+                <button type="submit" class="btn btn-primary glow" style="width: 100%;">Create Category</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
