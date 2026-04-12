@@ -37,6 +37,8 @@ python manage.py runserver
 ```
 7. Open [http://localhost:8000](http://localhost:8000) in browser
 
+8. https://expence-tracker-with-inshighter-1.onrender.com
+
 ## 📂 Project Structure
 ```
 expense_tracker/
